@@ -26,6 +26,7 @@ data = holdings_ws.get_all_records()
 df = pd.DataFrame(data)
 
 # Get active tickers
+df.columns = df.columns.str.strip()
 active = df[df["Status"] == "Active"]
 tickers = active["Ticker"].tolist()
 
