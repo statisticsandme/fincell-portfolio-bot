@@ -1,0 +1,29 @@
+name: Update FinCell Portfolio
+
+on:
+  schedule:
+    - cron: '31 10 * * 1-5'   # 4:01 PM IST = 10:31 UTC
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas gspread google-auth yfinance numpy
+
+      - name: Run portfolio updater
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          python update_portfolio.py
